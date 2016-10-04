@@ -34,6 +34,7 @@ namespace daw {
 
 	struct kv_file {
 		using values_type = std::vector<kv_pair>;
+		using iterator = values_type::iterator;
 		using const_iterator = values_type::const_iterator;
 	private:
 		std::vector<kv_pair> m_values;
@@ -42,6 +43,14 @@ namespace daw {
 
 		values_type const & data( ) const;
 		values_type & data( );
+		
+		iterator begin( );
+		const_iterator begin( ) const;
+		const_iterator cbegin( ) const;
+
+		iterator end( );
+		const_iterator end( ) const;
+		const_iterator cend( ) const;
 	};	// kv_file
 }    // namespace daw
 

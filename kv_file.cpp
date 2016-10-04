@@ -99,5 +99,29 @@ namespace daw {
 	kv_file::values_type & kv_file::data( ) {
 		return m_values;
 	}
+	
+	kv_file::iterator kv_file::begin( ) {
+		return m_values.begin( );
+	}
+
+	kv_file::const_iterator kv_file::begin( ) const {
+		return m_values.begin( );
+	}
+
+	kv_file::const_iterator kv_file::cbegin( ) const {
+		return m_values.cbegin( );
+	}
+
+	kv_file::iterator kv_file::end( ) {
+		return m_values.end( );
+	}
+
+	kv_file::const_iterator kv_file::end( ) const {
+		return m_values.end( );
+	}
+
+	kv_file::const_iterator kv_file::cend( ) const {
+		return m_values.end( );
+	}
 }    // namespace daw
 
