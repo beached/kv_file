@@ -33,4 +33,6 @@ BOOST_AUTO_TEST_CASE( kv_file_test_01 ) {
 	for( auto const & kvp : tst.data( ) ) {
 		std::cout << kvp.key << ", " << kvp.value << '\n';	
 	}
+	std::cout << std::endl;
+	std::cout << tst.to_string( ) << std::endl;
 }

@@ -51,6 +51,8 @@ namespace daw {
 		iterator end( );
 		const_iterator end( ) const;
 		const_iterator cend( ) const;
+		std::string to_string( ) const;
+		void to_file( boost::string_ref file_name ) const;
 	};	// kv_file
 }    // namespace daw
 

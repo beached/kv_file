@@ -46,8 +46,8 @@ namespace daw {
 					case '=': 
 						if( !in_quote ) {
 							auto sep = std::next( line.begin( ), pos );
-							result.key = std::string{ line.begin( ), sep };
-							result.value = std::string{ std::next( sep ), line.end( ) }; 
+							result.key = boost::trim_copy( std::string{ line.begin( ), sep } );
+							result.value = boost::trim_copy( std::string{ std::next( sep ), line.end( ) } );
 							return result;
 						}
 						break;
@@ -122,6 +122,27 @@ namespace daw {
 
 	kv_file::const_iterator kv_file::cend( ) const {
 		return m_values.end( );
+	}
+
+	std::string kv_file::to_string( ) const {
+		std::stringstream ss;
+		for( auto const & kv: m_values ) {
+			ss << kv.key << "=" << kv.value << '\n';
+		}
+		return ss.str( );
+	}
+
+	void kv_file::to_file( boost::string_ref file_name ) const {
+		std::ofstream out_file;
+		out_file.open( file_name.data( ), std::ios::binary | std::ios::trunc );
+		if( !out_file ) {
+			std::stringstream ss;
+			ss << "Could not open file '" << file_name.data( ) << "'";
+			throw std::runtime_error( ss.str( ) );
+		}
+		for( auto const & kv: m_values ) {
+			out_file << kv.key << "=" << kv.value << '\n';
+		}
 	}
 }    // namespace daw
 
