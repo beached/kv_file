@@ -29,6 +29,16 @@
 #include "kv_file.h"
 
 namespace daw {
+	kv_pair::kv_pair( ): 
+			key{ },
+			value{ } { }
+
+	kv_pair::kv_pair( std::string k, std::string v ):
+			key{ std::move( k ) },
+			value{ std::move( v ) } { }
+
+	kv_pair::~kv_pair( ) { }
+
 	namespace {
 		kv_pair parse_line( boost::string_ref line ) {
 			kv_pair result;
@@ -143,6 +153,11 @@ namespace daw {
 		for( auto const & kv: m_values ) {
 			out_file << kv.key << "=" << kv.value << '\n';
 		}
+	}
+
+
+	kv_file & kv_file::add( std::string key, std::string value ) {
+		m_values.emplace_back( std::move( key ), std::move( value ) );
 	}
 }    // namespace daw
 

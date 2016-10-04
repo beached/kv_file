@@ -30,6 +30,9 @@ namespace daw {
 	struct kv_pair {
 		std::string key;
 		std::string value;
+		kv_pair( );
+		kv_pair( std::string k, std::string p );
+		~kv_pair( );
 	};	// kv
 
 	struct kv_file {
@@ -53,6 +56,7 @@ namespace daw {
 		const_iterator cend( ) const;
 		std::string to_string( ) const;
 		void to_file( boost::string_ref file_name ) const;
+		kv_file & add( std::string key, std::string value );
 	};	// kv_file
 }    // namespace daw
 
