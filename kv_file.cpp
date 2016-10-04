@@ -85,7 +85,7 @@ namespace daw {
 
 		while( std::getline( in_file, line ).good( ) ) {
 			line = boost::trim_copy( line );
-			if( line.empty( ) ) {
+			if( line.empty( ) || line.front( ) == '#' ) {
 				continue;
 			}
 			m_values.push_back( parse_line( line ) );	
