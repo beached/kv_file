@@ -1,0 +1,4 @@
+somekey=somevalue
+"someother\"key"=someothervalue
+"some=key2"=somethingelse
+
