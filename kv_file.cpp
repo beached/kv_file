@@ -154,7 +154,7 @@ namespace daw {
 			out_file << kv.key << "=" << kv.value << '\n';
 		}
 	}
-
+	kv_file::kv_file( ): m_values{ } { }
 
 	kv_file & kv_file::add( std::string key, std::string value ) {
 		m_values.emplace_back( std::move( key ), std::move( value ) );

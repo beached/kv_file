@@ -42,6 +42,7 @@ namespace daw {
 	private:
 		std::vector<kv_pair> m_values;
 	public:
+		kv_file( );
 		kv_file( boost::string_ref file_name );
 
 		values_type const & data( ) const;
