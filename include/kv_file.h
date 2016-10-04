@@ -23,6 +23,7 @@
 #pragma once
 
 #include <boost/utility/string_ref.hpp>
+#include <boost/optional.hpp>
 #include <string>
 
 namespace daw {
@@ -33,6 +34,7 @@ namespace daw {
 
 	struct kv_file {
 		using values_type = std::vector<kv_pair>;
+		using const_iterator = values_type::const_iterator;
 	private:
 		std::vector<kv_pair> m_values;
 	public:
