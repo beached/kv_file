@@ -26,6 +26,8 @@
 #include <sstream>
 #include <string>
 
+#include <daw/daw_bounded_stack.h>
+
 #include "kv_file.h"
 
 namespace daw {
@@ -42,7 +44,7 @@ namespace daw {
 	namespace {
 		kv_pair parse_line( boost::string_ref line ) {
 			kv_pair result;
-			std::vector<char> ch_stack;
+			daw::bounded_stack_t<char, 2> ch_stack;
 			bool in_quote = false;
 			for( size_t pos=0; pos<line.size( ); ++pos ) {
 				switch( line[pos] ) {
@@ -64,7 +66,7 @@ namespace daw {
 				}
 				if( !ch_stack.empty( ) ) {
 					if( ch_stack.front( ) == '\\' ) {
-						if( ch_stack.size( ) == 2 ) {
+						if( ch_stack.used( ) == 2 ) {
 							ch_stack.clear( );
 						}
 					} else if( ch_stack.front( ) == '\"' ) {

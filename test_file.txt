@@ -1,4 +1,25 @@
 somekey=somevalue
 "someother\"key"=someothervalue
 "some=key2"=somethingelse
+cache_folder=/home/dwright/.glean_cache
+project_name=header_libraries
+	type=git
+	uri=https://github.com/beached/header_libraries.git
+	branch=master
+
+project_name=char_range
+	type=git
+	uri=https://github.com/beached/char_range.git
+	branch=master
+
+project_name=parse_json
+	type=git
+	uri=https://github.com/beached/parse_json.git
+	branch=master
+
+project_name=lib_nodepp
+	type=git
+	uri=https://github.com/beached/lib_nodepp.git
+	branch=master
+
 

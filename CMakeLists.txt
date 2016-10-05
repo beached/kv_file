@@ -14,6 +14,19 @@ else( )
 	endif( )
 endif( )
 
+include( ExternalProject )
+
+externalproject_add(
+    header_libraries_prj
+    GIT_REPOSITORY "https://github.com/beached/header_libraries.git"
+    SOURCE_DIR "${CMAKE_BINARY_DIR}/dependencies/header_libraries"
+    GIT_TAG "master"
+    INSTALL_DIR "${CMAKE_BINARY_DIR}/install"
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/install
+)
+
+include_directories( SYSTEM "${CMAKE_BINARY_DIR}/install/include" )
+link_directories( "${CMAKE_BINARY_DIR}/install/lib" )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 add_definitions( -DBOOST_TEST_DYN_LINK ) 
