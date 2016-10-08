@@ -25,6 +25,7 @@
 #include <boost/utility/string_ref.hpp>
 #include <boost/optional.hpp>
 #include <string>
+#include <vector>
 
 namespace daw {
 	struct kv_pair {
