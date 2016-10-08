@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/utility/string_ref.hpp>
+#include <boost/utility/string_view.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <fstream>
 #include <sstream>
@@ -42,7 +42,7 @@ namespace daw {
 	kv_pair::~kv_pair( ) { }
 
 	namespace {
-		kv_pair parse_line( boost::string_ref line ) {
+		kv_pair parse_line( boost::string_view line ) {
 			kv_pair result;
 			daw::bounded_stack_t<char, 2> ch_stack;
 			bool in_quote = false;
@@ -82,7 +82,7 @@ namespace daw {
 
 	}
 
-	kv_file::kv_file( boost::string_ref file_name ): m_values{ } {
+	kv_file::kv_file( boost::string_view file_name ): m_values{ } {
 		std::ifstream in_file;
 		in_file.open( file_name.data( ), std::ios::binary );
 
@@ -144,7 +144,7 @@ namespace daw {
 		return ss.str( );
 	}
 
-	void kv_file::to_file( boost::string_ref file_name ) const {
+	void kv_file::to_file( boost::string_view file_name ) const {
 		std::ofstream out_file;
 		out_file.open( file_name.data( ), std::ios::binary | std::ios::trunc );
 		if( !out_file ) {

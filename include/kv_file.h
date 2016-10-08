@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <boost/utility/string_ref.hpp>
+#include <boost/utility/string_view.hpp>
 #include <boost/optional.hpp>
 #include <string>
 #include <vector>
@@ -44,7 +44,7 @@ namespace daw {
 		std::vector<kv_pair> m_values;
 	public:
 		kv_file( );
-		kv_file( boost::string_ref file_name );
+		kv_file( boost::string_view file_name );
 
 		values_type const & data( ) const;
 		values_type & data( );
@@ -57,7 +57,7 @@ namespace daw {
 		const_iterator end( ) const;
 		const_iterator cend( ) const;
 		std::string to_string( ) const;
-		void to_file( boost::string_ref file_name ) const;
+		void to_file( boost::string_view file_name ) const;
 		kv_file & add( std::string key, std::string value );
 	};	// kv_file
 }    // namespace daw
