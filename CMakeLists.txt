@@ -48,6 +48,7 @@ set( SOURCE_FILES
 )
 
 add_library( kv_file STATIC ${HEADER_FILES} ${SOURCE_FILES} )
+add_dependencies( kv_file header_libraries_prj )
 target_link_libraries( kv_file ${Boost_LIBRARIES} )
 
 add_executable( kv_file_test_bin ${TEST_FOLDER}/kv_file_test.cpp )
