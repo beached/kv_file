@@ -29,24 +29,28 @@ include_directories( SYSTEM "${CMAKE_BINARY_DIR}/install/include" )
 link_directories( "${CMAKE_BINARY_DIR}/install/lib" )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
+
+enable_testing( )
 add_definitions( -DBOOST_TEST_DYN_LINK ) 
 
 include_directories( "./include" )
 
 set( HEADER_FOLDER "include" )
+set( SOURCE_FOLDER "src" )
+set( TEST_FOLDER "tests" )
 
 set( HEADER_FILES
 	${HEADER_FOLDER}/kv_file.h
 )
 
 set( SOURCE_FILES
-	kv_file.cpp
+	${SOURCE_FOLDER}/kv_file.cpp
 )
 
 add_library( kv_file STATIC ${HEADER_FILES} ${SOURCE_FILES} )
 target_link_libraries( kv_file ${Boost_LIBRARIES} )
 
-add_executable( kv_file_test_bin kv_file_test.cpp )
+add_executable( kv_file_test_bin ${TEST_FOLDER}/kv_file_test.cpp )
 target_link_libraries( kv_file_test_bin kv_file ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} )
 add_test( kv_file_test, kv_file_test_bin )
 

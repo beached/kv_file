@@ -34,6 +34,10 @@ namespace daw {
 		kv_pair( );
 		kv_pair( std::string k, std::string p );
 		~kv_pair( );
+		kv_pair( kv_pair const & ) = default;
+		kv_pair( kv_pair && ) = default;
+		kv_pair & operator=( kv_pair const & ) = default;
+		kv_pair & operator=( kv_pair && ) = default;
 	};	// kv
 
 	struct kv_file {

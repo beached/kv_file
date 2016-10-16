@@ -57,7 +57,7 @@ namespace daw {
 					}
 					case '=': 
 						if( !in_quote ) {
-							auto sep = std::next( line.begin( ), pos );
+							auto sep = std::next( line.begin( ), static_cast<std::iterator_traits<decltype(line.begin( ))>::difference_type>(pos) );
 							result.key = boost::trim_copy( std::string{ line.begin( ), sep } );
 							result.value = boost::trim_copy( std::string{ std::next( sep ), line.end( ) } );
 							return result;
