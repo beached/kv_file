@@ -41,45 +41,42 @@ namespace daw {
 
 	kv_pair::~kv_pair( ) { }
 
-	namespace {
-		kv_pair parse_line( boost::string_view line ) {
-			kv_pair result;
-			daw::bounded_stack_t<char, 2> ch_stack;
-			bool in_quote = false;
-			for( size_t pos=0; pos<line.size( ); ++pos ) {
-				switch( line[pos] ) {
-					case '\\':
-						ch_stack.push_back( '\\' );
+	kv_pair parse_string( boost::string_view line ) {
+		kv_pair result;
+		daw::bounded_stack_t<char, 2> ch_stack;
+		bool in_quote = false;
+		for( size_t pos=0; pos<line.size( ); ++pos ) {
+			switch( line[pos] ) {
+				case '\\':
+					ch_stack.push_back( '\\' );
+				break;
+				case '\"': {
+					ch_stack.push_back( '\"' );
 					break;
-					case '\"': {
-						ch_stack.push_back( '\"' );
-						break;
-					}
-					case '=': 
-						if( !in_quote ) {
-							auto sep = std::next( line.begin( ), static_cast<std::iterator_traits<decltype(line.begin( ))>::difference_type>(pos) );
-							result.key = boost::trim_copy( std::string{ line.begin( ), sep } );
-							result.value = boost::trim_copy( std::string{ std::next( sep ), line.end( ) } );
-							return result;
-						}
-						break;
 				}
-				if( !ch_stack.empty( ) ) {
-					if( ch_stack.front( ) == '\\' ) {
-						if( ch_stack.used( ) == 2 ) {
-							ch_stack.clear( );
-						}
-					} else if( ch_stack.front( ) == '\"' ) {
-						in_quote = !in_quote;
+				case '=': 
+					if( !in_quote ) {
+						auto sep = std::next( line.begin( ), static_cast<std::iterator_traits<decltype(line.begin( ))>::difference_type>(pos) );
+						result.key = boost::trim_copy( std::string{ line.begin( ), sep } );
+						result.value = boost::trim_copy( std::string{ std::next( sep ), line.end( ) } );
+						return result;
+					}
+					break;
+			}
+			if( !ch_stack.empty( ) ) {
+				if( ch_stack.front( ) == '\\' ) {
+					if( ch_stack.used( ) == 2 ) {
 						ch_stack.clear( );
 					}
+				} else if( ch_stack.front( ) == '\"' ) {
+					in_quote = !in_quote;
+					ch_stack.clear( );
 				}
 			}
-			std::stringstream ss;
-			ss << "Could not find unquoted = symbol to split line on: '" << line.data( ) << "'";
-			throw std::runtime_error( ss.str( ) ); 
 		}
-
+		std::stringstream ss;
+		ss << "Could not find unquoted = symbol to split line on: '" << line.data( ) << "'";
+		throw std::runtime_error( ss.str( ) ); 
 	}
 
 	kv_file::kv_file( boost::string_view file_name ): m_values{ } {
@@ -100,7 +97,7 @@ namespace daw {
 			if( line.empty( ) || line.front( ) == '#' ) {
 				continue;
 			}
-			m_values.push_back( parse_line( line ) );	
+			m_values.push_back( parse_string( line ) );	
 		}
 	}
 
