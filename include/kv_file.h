@@ -40,7 +40,7 @@ namespace daw {
 		kv_pair & operator=( kv_pair && ) = default;
 	};	// kv
 
-	kv_pair parse_string( boost::string_view line );
+	kv_pair parse_kv_string( boost::string_view line );
 
 	struct kv_file {
 		using values_type = std::vector<kv_pair>;

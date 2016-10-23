@@ -41,7 +41,7 @@ namespace daw {
 
 	kv_pair::~kv_pair( ) { }
 
-	kv_pair parse_string( boost::string_view line ) {
+	kv_pair parse_kv_string( boost::string_view line ) {
 		kv_pair result;
 		daw::bounded_stack_t<char, 2> ch_stack;
 		bool in_quote = false;
@@ -97,7 +97,7 @@ namespace daw {
 			if( line.empty( ) || line.front( ) == '#' ) {
 				continue;
 			}
-			m_values.push_back( parse_string( line ) );	
+			m_values.push_back( parse_kv_string( line ) );	
 		}
 	}
 
