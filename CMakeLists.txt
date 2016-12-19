@@ -5,7 +5,7 @@ project( kv_file_prj )
 find_package( Boost 1.58.0 COMPONENTS iostreams unit_test_framework REQUIRED )
 
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
-	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
+	add_compile_options( -D_WIN32_WINNT=0x0601 /std:c++14 ) 
 else( )
 	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
 		add_compile_options(-std=c++14 -Weverything -pthread -Wno-c++98-compat -g -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)
