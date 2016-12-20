@@ -31,7 +31,7 @@ include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 link_directories( ${Boost_LIBRARY_DIRS} )
 
 enable_testing( )
-add_definitions( -DBOOST_TEST_DYN_LINK ) 
+add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK ) 
 
 include_directories( "./include" )
 
