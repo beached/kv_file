@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 2.8.12 )
 
 project( kv_file_prj )
 
-find_package( Boost 1.58.0 COMPONENTS iostreams unit_test_framework REQUIRED )
+find_package( Boost 1.58.0 COMPONENTS unit_test_framework REQUIRED )
 
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
 	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
@@ -49,9 +49,8 @@ set( SOURCE_FILES
 
 add_library( kv_file STATIC ${HEADER_FILES} ${SOURCE_FILES} )
 add_dependencies( kv_file header_libraries_prj )
-target_link_libraries( kv_file ${Boost_LIBRARIES} )
 
-add_executable( kv_file_test_bin ${TEST_FOLDER}/kv_file_test.cpp )
+add_executable( kv_file_test_bin ${HEADER_FILES} ${TEST_FOLDER}/kv_file_test.cpp )
 target_link_libraries( kv_file_test_bin kv_file ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} )
 add_test( kv_file_test, kv_file_test_bin )
 
