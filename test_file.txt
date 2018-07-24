@@ -22,4 +22,4 @@ project_name=lib_nodepp
 	uri=https://github.com/beached/lib_nodepp.git
 	branch=master
 
-
+"test = blah"=hello

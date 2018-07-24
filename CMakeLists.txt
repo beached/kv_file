@@ -14,16 +14,13 @@ else( )
 	endif( )
 endif( )
 
-include( ExternalProject )
-
-externalproject_add(
-    header_libraries_prj
-    GIT_REPOSITORY "https://github.com/beached/header_libraries.git"
-    SOURCE_DIR "${CMAKE_BINARY_DIR}/dependencies/header_libraries"
-    GIT_TAG "master"
-    INSTALL_DIR "${CMAKE_BINARY_DIR}/install"
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/install
-)
+if( EXISTS "${CMAKE_SOURCE_DIR}/dependent_projects/build" )
+	add_custom_target( dependency_stub )
+	include_directories( SYSTEM "${CMAKE_SOURCE_DIR}/dependent_projects/build/install/include" )
+	link_directories( "${CMAKE_SOURCE_DIR}/dependent_projects/build/install/lib" )
+else( )
+	include( "${CMAKE_SOURCE_DIR}/dependent_projects/dependencies.txt" )
+endif( )
 
 include_directories( SYSTEM "${CMAKE_BINARY_DIR}/install/include" )
 link_directories( "${CMAKE_BINARY_DIR}/install/lib" )
@@ -48,7 +45,7 @@ set( SOURCE_FILES
 )
 
 add_library( kv_file STATIC ${HEADER_FILES} ${SOURCE_FILES} )
-add_dependencies( kv_file header_libraries_prj )
+add_dependencies( kv_file dependency_stub )
 
 add_executable( kv_file_test_bin ${HEADER_FILES} ${TEST_FOLDER}/kv_file_test.cpp )
 target_link_libraries( kv_file_test_bin kv_file ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} )
@@ -56,3 +53,4 @@ add_test( kv_file_test, kv_file_test_bin )
 
 install( TARGETS kv_file DESTINATION lib )
 install( DIRECTORY ${HEADER_FOLDER}/ DESTINATION include/daw )
+

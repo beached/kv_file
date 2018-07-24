@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016-2017 Darrell Wright
+// Copyright (c) 2016-2018 Darrell Wright
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files( the "Software" ), to
@@ -31,13 +31,8 @@ namespace daw {
 	struct kv_pair {
 		std::string key;
 		std::string value;
+
 		kv_pair( std::string k, std::string p ) noexcept;
-		~kv_pair( );
-		kv_pair( ) = delete;
-		kv_pair( kv_pair const & ) = default;
-		kv_pair( kv_pair && ) noexcept = default;
-		kv_pair &operator=( kv_pair const & ) = default;
-		kv_pair &operator=( kv_pair && ) noexcept = default;
 	}; // kv
 
 	kv_pair parse_kv_string( daw::string_view line );
@@ -69,4 +64,3 @@ namespace daw {
 		kv_file &add( std::string key, std::string value );
 	}; // kv_file
 } // namespace daw
-
