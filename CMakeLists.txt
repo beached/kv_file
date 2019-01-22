@@ -4,36 +4,37 @@ project( kv_file_prj )
 
 find_package( Boost 1.60.0 REQUIRED )
 
-set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
-if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
-	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
-else( )
-	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
-		add_compile_options( -Weverything -pthread -Wno-c++98-compat -g -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)
-	elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
-		add_compile_options( -g -Wall -pthread -Wno-deprecated-declarations)
-	endif( )
+include( "${CMAKE_SOURCE_DIR}/dependent_projects/CMakeListsCompiler.txt" )
+
+set( DEP_ROOT_DIR_BASE "${CMAKE_SOURCE_DIR}/dependent_projects/build" )
+if( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
+	set( DEP_ROOT_DIR "${DEP_ROOT_DIR_BASE}/debug" )
+elseif( "${CMAKE_BUILD_TYPE}" STREQUAL "Release" )
+	set( DEP_ROOT_DIR "${DEP_ROOT_DIR_BASE}/release" )
 endif( )
 
-if( EXISTS "${CMAKE_SOURCE_DIR}/dependent_projects/build" )
+message( "Building for: ${CMAKE_BUILD_TYPE}" )
+if( EXISTS "${DEP_ROOT_DIR}" )
+	message( "${DEP_ROOT_DIR}" )
+	message( "using dependency folder" )
 	add_custom_target( dependency_stub )
-	include_directories( SYSTEM "${CMAKE_SOURCE_DIR}/dependent_projects/build/install/include" )
-	link_directories( "${CMAKE_SOURCE_DIR}/dependent_projects/build/install/lib" )
+	include_directories( SYSTEM "${DEP_ROOT_DIR}/install/include" )
+	link_directories( "${DEP_ROOT_DIR}/install/lib" )
 else( )
+	message( "downloading and building deps" )
 	include( "${CMAKE_SOURCE_DIR}/dependent_projects/dependencies.txt" )
-  include_directories( SYSTEM "${CMAKE_BINARY_DIR}/install/include" )
-	link_directories( "${CMAKE_BINARY_DIR}/install/lib" )
+	add_library( dependency_stub STATIC "${CMAKE_SOURCE_DIR}/dependent_projects/stub.cpp" )
+	add_dependencies( dependency_stub ${DEP_PROJECT_DEPS} )
 endif( )
 
+set( HEADER_FOLDER "include" )
+set( SOURCE_FOLDER "src" )
+set( TEST_FOLDER "tests" )
 
 enable_testing( )
 
 include_directories( "./include" )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
-
-set( HEADER_FOLDER "include" )
-set( SOURCE_FOLDER "src" )
-set( TEST_FOLDER "tests" )
 
 set( HEADER_FILES
 	${HEADER_FOLDER}/kv_file.h
