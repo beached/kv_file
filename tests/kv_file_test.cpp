@@ -20,19 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#define BOOST_TEST_MODULE kv_file_test
-#include <boost/test/unit_test.hpp>
-
 #include <cstdlib>
 #include <iostream>
 
 #include "kv_file.h"
 
-BOOST_AUTO_TEST_CASE( kv_file_test_01 ) {
-	daw::kv_file tst{"../test_file.txt"};
+void kv_file_test_01( ) {
+	daw::kv_file tst("../test_file.txt");
 	for( auto const &kvp : tst.data( ) ) {
 		std::cout << kvp.key << ", " << kvp.value << '\n';
 	}
 	std::cout << std::endl;
 	std::cout << tst.to_string( ) << std::endl;
 }
+
+int main( ) {
+	kv_file_test_01( );
+}
+

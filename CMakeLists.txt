@@ -2,15 +2,16 @@ cmake_minimum_required( VERSION 2.8.12 )
 
 project( kv_file_prj )
 
-find_package( Boost 1.58.0 COMPONENTS unit_test_framework REQUIRED )
+find_package( Boost 1.60.0 REQUIRED )
 
+set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested.")
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL 'MSVC' )
-	add_compile_options( -D_WIN32_WINNT=0x0601 /std:c++latest ) 
+	add_compile_options( -D_WIN32_WINNT=0x0601 ) 
 else( )
 	if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" )
-		add_compile_options(-std=c++14 -Weverything -pthread -Wno-c++98-compat -g -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)
+		add_compile_options( -Weverything -pthread -Wno-c++98-compat -g -Wno-covered-switch-default -Wno-padded -Wno-exit-time-destructors -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-missing-noreturn -Wno-missing-prototypes -Wno-disabled-macro-expansion)
 	elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
-		add_compile_options(-std=c++14 -g -Wall -pthread -Wno-deprecated-declarations)
+		add_compile_options( -g -Wall -pthread -Wno-deprecated-declarations)
 	endif( )
 endif( )
 
@@ -24,13 +25,11 @@ endif( )
 
 include_directories( SYSTEM "${CMAKE_BINARY_DIR}/install/include" )
 link_directories( "${CMAKE_BINARY_DIR}/install/lib" )
-include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
-link_directories( ${Boost_LIBRARY_DIRS} )
 
 enable_testing( )
-add_definitions( -DBOOST_TEST_DYN_LINK -DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK ) 
 
 include_directories( "./include" )
+include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 
 set( HEADER_FOLDER "include" )
 set( SOURCE_FOLDER "src" )
@@ -48,7 +47,7 @@ add_library( kv_file STATIC ${HEADER_FILES} ${SOURCE_FILES} )
 add_dependencies( kv_file dependency_stub )
 
 add_executable( kv_file_test_bin ${HEADER_FILES} ${TEST_FOLDER}/kv_file_test.cpp )
-target_link_libraries( kv_file_test_bin kv_file ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} )
+target_link_libraries( kv_file_test_bin kv_file )
 add_test( kv_file_test, kv_file_test_bin )
 
 install( TARGETS kv_file DESTINATION lib )

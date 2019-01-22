@@ -24,7 +24,8 @@
 #include <sstream>
 #include <string>
 
-#include <daw/daw_bounded_stack.h>
+#include <daw/daw_bounded_vector.h>
+#include <daw/daw_move.h>
 #include <daw/daw_parser_helper_sv.h>
 #include <daw/daw_string.h>
 #include <daw/daw_string_view.h>
@@ -33,11 +34,11 @@
 
 namespace daw {
 	kv_pair::kv_pair( std::string k, std::string v ) noexcept
-	  : key( std::move( k ) )
-	  , value( std::move( v ) ) {}
+	  : key( daw::move( k ) )
+	  , value( daw::move( v ) ) {}
 
 	kv_pair parse_kv_string( daw::string_view line ) {
-		daw::bounded_stack_t<char, 2> ch_stack;
+		daw::bounded_vector_t<char, 2> ch_stack;
 		bool in_quote = false;
 		auto first = line.begin( );
 		// Find the = character that is not within a quote or that is escaped.
@@ -60,6 +61,7 @@ namespace daw {
 					    .to_string( )};
 				}
 				// Fallthrough if within string
+			[[fallthrough]];
 			default:
 				line.remove_prefix( );
 				break;
@@ -67,7 +69,7 @@ namespace daw {
 			if( !ch_stack.empty( ) ) {
 				switch( ch_stack.front( ) ) {
 				case '\\':
-					if( ch_stack.used( ) == 2 ) {
+					if( ch_stack.size( ) == 2 ) {
 						ch_stack.clear( );
 					}
 					break;
@@ -163,7 +165,7 @@ namespace daw {
 	  : m_values{} {}
 
 	kv_file &kv_file::add( std::string key, std::string value ) {
-		m_values.emplace_back( std::move( key ), std::move( value ) );
+		m_values.emplace_back( daw::move( key ), daw::move( value ) );
 		return *this;
 	}
 } // namespace daw
