@@ -21,10 +21,10 @@ if( EXISTS "${CMAKE_SOURCE_DIR}/dependent_projects/build" )
 	link_directories( "${CMAKE_SOURCE_DIR}/dependent_projects/build/install/lib" )
 else( )
 	include( "${CMAKE_SOURCE_DIR}/dependent_projects/dependencies.txt" )
+  include_directories( SYSTEM "${CMAKE_BINARY_DIR}/install/include" )
+	link_directories( "${CMAKE_BINARY_DIR}/install/lib" )
 endif( )
 
-include_directories( SYSTEM "${CMAKE_BINARY_DIR}/install/include" )
-link_directories( "${CMAKE_BINARY_DIR}/install/lib" )
 
 enable_testing( )
 
@@ -48,7 +48,7 @@ add_dependencies( kv_file dependency_stub )
 
 add_executable( kv_file_test_bin ${HEADER_FILES} ${TEST_FOLDER}/kv_file_test.cpp )
 target_link_libraries( kv_file_test_bin kv_file )
-add_test( kv_file_test, kv_file_test_bin )
+add_test( kv_file_test kv_file_test_bin )
 
 install( TARGETS kv_file DESTINATION lib )
 install( DIRECTORY ${HEADER_FOLDER}/ DESTINATION include/daw )
